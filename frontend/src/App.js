@@ -1,6 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, NavLink, Navigate } from "react-router-dom";
 import CarList from "./components/CarList";
+import CustomerList from "./components/CustomerList";
+import RentalList from "./components/RentalList";
+
 
 function App() {
   return (
@@ -8,7 +11,7 @@ function App() {
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <NavLink className="navbar-brand" to="/">Car Rental System</NavLink>
-          <div className="collapse navbar-collapse show">
+          <div className="navbar-nav ms-auto">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
                 <NavLink className="nav-link" to="/cars">Cars</NavLink>
@@ -28,8 +31,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/cars" replace />} />
           <Route path="/cars" element={<CarList />} />
-          <Route path="/customers" element={<div className="text-light">Customers page coming soon</div>} />
-          <Route path="/rentals" element={<div className="text-light">Rentals page coming soon</div>} />
+          <Route path="/customers" element={<CustomerList />} />
+          <Route path="/rentals" element={<RentalList />} />
+
         </Routes>
       </div>
     </Router>
