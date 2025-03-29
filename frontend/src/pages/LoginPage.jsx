@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 function LoginPage() {
-  const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,10 +16,14 @@ function LoginPage() {
         email,
         password,
       });
-      login(res.data.user, res.data.token);
-      navigate("/cars");
+
+      if (res.status === 200) {
+        login(res.data); // saves token + user data to context + localStorage
+        navigate("/cars"); // redirect after login
+      }
     } catch (err) {
-      alert("Login failed");
+      console.error("Login failed", err);
+      alert("Invalid credentials");
     }
   };
 
@@ -27,9 +31,23 @@ function LoginPage() {
     <div className="container mt-5">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <input className="form-control mb-2" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" required />
-        <input className="form-control mb-2" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" type="password" required />
-        <button className="btn btn-primary" type="submit">Login</button>
+        <input
+          className="form-control mb-2"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          className="form-control mb-2"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button className="btn btn-primary">Login</button>
       </form>
     </div>
   );

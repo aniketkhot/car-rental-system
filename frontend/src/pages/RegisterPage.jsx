@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
   });
@@ -31,7 +31,7 @@ function RegisterPage() {
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <input
-          name="fullName"
+          name="name"
           className="form-control mb-2"
           placeholder="Full Name"
           value={formData.fullName}
