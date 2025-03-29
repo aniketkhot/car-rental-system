@@ -1,43 +1,37 @@
-import React, { useContext } from "react";
-
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CarList from "./components/CarList";
 import CustomerList from "./components/CustomerList";
 import RentalList from "./components/RentalList";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import { AuthProvider, AuthContext } from "./context/AuthContext";
+import Navbar from "./components/Navbar";
+import { AuthProvider } from "./context/AuthContext";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
-  const { user } = useContext(AuthContext);
   return (
     <Router>
       <AuthProvider>
         <Navbar />
         <div className="container mt-4">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              user ? (
-                <Navigate to="/cars" replace />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-
-          {user && (
-            <>
-              <Route path="/cars" element={<CarList />} />
-              <Route path="/customers" element={<CustomerList />} />
-              <Route path="/rentals" element={<RentalList />} />
-            </>
-          )}
-        </Routes>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/" element={<LoginPage />} />
+            <Route
+              path="/cars"
+              element={<PrivateRoute element={<CarList />} />}
+            />
+            <Route
+              path="/customers"
+              element={<PrivateRoute element={<CustomerList />} />}
+            />
+            <Route
+              path="/rentals"
+              element={<PrivateRoute element={<RentalList />} />}
+            />
+          </Routes>
         </div>
       </AuthProvider>
     </Router>
