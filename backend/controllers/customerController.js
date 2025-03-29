@@ -45,6 +45,7 @@ exports.updateCustomer = async (req, res) => {
 // Delete a customer
 exports.deleteCustomer = async (req, res) => {
   try {
+    console.log("in controller")
     await Customer.findByIdAndDelete(req.params.id);
     res.json({ message: "Customer deleted successfully" });
   } catch (error) {

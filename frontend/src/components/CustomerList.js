@@ -26,10 +26,22 @@ function CustomerList() {
     setNewCustomer({ ...newCustomer, [e.target.name]: e.target.value });
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this Customer?")) {
+      try {
+        await axios.delete(`http://localhost:5001/api/customers/${id}`);
+        alert("Car deleted successfully");
+        fetchCustomers(); // refresh the list
+      } catch (err) {
+        console.error("Failed to delete customer:", err);
+      }
+    }
+  };
+
   const handleAddCustomer = async () => {
     try {
       await axios.post("http://localhost:5001/api/customers", newCustomer);
-      setNewCustomer({ fullName: "", email: "" });
+      setNewCustomer({ fullName: "", email: "", phone:"", address:"" });
       fetchCustomers();
     } catch (err) {
       console.error("Error adding customer:", err);
@@ -57,6 +69,22 @@ function CustomerList() {
           value={newCustomer.email}
           onChange={handleChange}
         />
+                <input
+          type="email"
+          className="form-control mb-2"
+          name="phone"
+          placeholder="Phone"
+          value={newCustomer.phone}
+          onChange={handleChange}
+        />
+                <input
+          type="email"
+          className="form-control mb-2"
+          name="address"
+          placeholder="Address"
+          value={newCustomer.address}
+          onChange={handleChange}
+        />
         <button className="btn btn-primary" onClick={handleAddCustomer}>
           Add Customer
         </button>
@@ -67,6 +95,8 @@ function CustomerList() {
           <tr>
             <th>Full Name</th>
             <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
           </tr>
         </thead>
         <tbody>
@@ -74,6 +104,16 @@ function CustomerList() {
             <tr key={cust._id}>
               <td>{cust.fullName}</td>
               <td>{cust.email}</td>
+              <td>{cust.phone}</td>
+              <td>{cust.address}</td>
+              <td><button className="btn btn-secondary btn-sm ms-2" onClick={() => handleDelete(cust._id)}>
+                Update
+                </button>
+                </td>
+              <td><button className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(cust._id)}>
+                Delete
+                </button>
+                </td>
             </tr>
           ))}
         </tbody>

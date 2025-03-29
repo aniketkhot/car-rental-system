@@ -12,6 +12,18 @@ function CarList() {
       .catch((err) => console.error("Error fetching cars:", err));
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this car?")) {
+      try {
+        await axios.delete(`http://localhost:5001/api/cars/${id}`);
+        alert("Car deleted successfully");
+        fetchCars(); // refresh the list
+      } catch (err) {
+        console.error("Failed to delete car:", err);
+      }
+    }
+  };
+
   useEffect(() => {
     fetchCars();
   }, []);
@@ -42,6 +54,12 @@ function CarList() {
                 <td>{car.year}</td>
                 <td>{car.registrationNumber}</td>
                 <td>{car.available ? "Yes" : "No"}</td>
+                <td>
+                <button className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(car._id)}>
+                  Delete
+                </button>
+
+                </td>
               </tr>
             ))}
           </tbody>
