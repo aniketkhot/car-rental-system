@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import UpdateCustomerForm from "./UpdateCustomerForm";
+
 
 function CustomerList() {
   const [customers, setCustomers] = useState([]);
@@ -7,6 +9,8 @@ function CustomerList() {
     fullName: "",
     email: "",
   });
+  const [editingCustomer, setEditingCustomer] = useState(null); 
+
 
   
   useEffect(() => {
@@ -106,9 +110,12 @@ function CustomerList() {
               <td>{cust.email}</td>
               <td>{cust.phone}</td>
               <td>{cust.address}</td>
-              <td><button className="btn btn-secondary btn-sm ms-2" onClick={() => handleDelete(cust._id)}>
-                Update
-                </button>
+              <td><button
+                className="btn btn-warning btn-sm me-2"
+                onClick={() => setEditingCustomer(cust)} // 👈 Open modal
+              >
+                Edit
+              </button>
                 </td>
               <td><button className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(cust._id)}>
                 Delete
@@ -118,6 +125,16 @@ function CustomerList() {
           ))}
         </tbody>
       </table>
+      {editingCustomer && (
+        <UpdateCustomerForm
+          customer={editingCustomer}
+          onUpdate={() => {
+            setEditingCustomer(null);
+            fetchCustomers(); // Refresh list
+          }}
+          onCancel={() => setEditingCustomer(null)}
+        />
+      )}
     </div>
   );
 }

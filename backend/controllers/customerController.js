@@ -32,13 +32,16 @@ exports.getCustomerById = async (req, res) => {
   }
 };
 
-// Update a customer
 exports.updateCustomer = async (req, res) => {
   try {
-    const updatedCustomer = await Customer.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const { id } = req.params;
+    const updatedCustomer = await Customer.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updatedCustomer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
     res.json(updatedCustomer);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 
